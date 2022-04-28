@@ -4,7 +4,19 @@ import Stage from "./Stage"
 export default class MouseLines{
   m_xLine: Konva.Line;
   m_yLine: Konva.Line;
+  m_lineToggleInput: HTMLInputElement | null;
   constructor(stage: Stage) {
+    this.m_lineToggleInput = document.getElementById("toggleLines") as HTMLInputElement | null;
+    this.m_lineToggleInput?.addEventListener("change", () => {
+      if (this.m_lineToggleInput?.checked) {
+        this.m_xLine.show()
+        this.m_yLine.show()
+      } else {
+        this.m_xLine.hide()
+        this.m_yLine.hide()
+      }
+    })
+    
     this.m_xLine = new Konva.Line({
       points: [10, 0, 10, stage.m_height],
       stroke: 'red',

@@ -27,7 +27,7 @@ export default class Stage{
     this.m_robotImageGroup = new Konva.Group();
     this.m_robotLineGroup = new Konva.Group();
 
-    this.m_animatedLayer.add(this.m_robotLineGroup, this.m_robotImageGroup, this.m_mouseLineGroup)
+    this.m_animatedLayer.add(this.m_robotImageGroup, this.m_robotLineGroup, this.m_mouseLineGroup)
 
     this.m_stage.add(this.m_backgroundLayer, this.m_animatedLayer);
   }

@@ -11,8 +11,26 @@
     <h1 class="text-center text-bold text-7xl text-blue-300 grow-0">TEAM 293 AUTO SIM</h1>
     <section class="flex justify-between grow-1">
       <!-- left  -->
-      <div class="w-1/4">
-      asdf  
+      <div class="w-1/4 inline-flex">
+        <!-- true left -->
+        <div class="flex flex-col space-y-3">
+          <label for="toggleLines" class="inline-block select-none">
+            Toggle Lines:
+            <input type="checkbox" id="toggleLines" name="toggleLines" checked>
+          </label>
+
+          <label for="toggleRobots" class="inline-block select-none">
+            Toggle Robots:
+            <input type="checkbox" id="toggleRobots" name="toggleRobots" checked>
+          </label>
+        </div>
+
+        <!-- almost left -->
+        <div>
+          <ul id="robotUL" class="flex flex-col gap-3">
+            
+          </ul>
+        </div>
       </div>
       <!-- right: canvas -->
       <div id="canvas" class="w-3/4 inline-flex items-center justify-end cursor-crosshair">

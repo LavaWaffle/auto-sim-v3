@@ -2,6 +2,7 @@ import Konva from "konva";
 import Robot from "./Robot"
 import Stage from "./Stage"
 import Storage from "./Storage"
+import RobotLines from "./RobotLines"
 
 type robotSkeleton = {
   x: number,
@@ -12,12 +13,27 @@ type robotSkeleton = {
 export default class HandleRobots{
   m_stage: Stage;
   m_robots: robotSkeleton[] = [];
+  m_robotLines: RobotLines;
   m_robotWidth: number = 48.49;
   m_robotHeight: number = 47.98;
+  m_toggleRobotsInput: HTMLInputElement | null;
   constructor(stage: Stage){
+    this.m_toggleRobotsInput = document.getElementById("toggleRobots") as HTMLInputElement | null
+    this.m_toggleRobotsInput?.addEventListener("change", () => {
+      if (this.m_toggleRobotsInput?.checked) {
+        stage.m_robotImageGroup.show()
+        stage.m_robotLineGroup.show()
+      } else {
+        stage.m_robotImageGroup.hide()
+        stage.m_robotLineGroup.hide()
+      }
+    })
     this.m_stage = stage
     this.m_robots = this.getRobots()
 
+    this.m_robotLines = new RobotLines(this.m_stage)
+    this.m_robotLines.setRobots(this.m_robots)
+    this.m_robotLines.drawLines()
     // needed if "this" is undefined
     this.setOneRobot = this.setOneRobot.bind(this)
     this.addRobotAtMouse = this.addRobotAtMouse.bind(this)
@@ -25,27 +41,35 @@ export default class HandleRobots{
   }
   // adds a robot at the mouse position
   addRobotAtMouse() {
-    const mouse = this.m_stage.m_stage.getRelativePointerPosition()
-    const robot: robotSkeleton = {
-      x: mouse.x,
-      y: mouse.y,
-      bearing: 0,
+    if (this.m_toggleRobotsInput?.checked) {
+      const mouse = this.m_stage.m_stage.getRelativePointerPosition()
+      const robot: robotSkeleton = {
+        x: mouse.x,
+        y: mouse.y,
+        bearing: 0,
+      }
+      this.m_robots.push(robot)
+      this.drawRobots(true)
+      this.saveRobots()
+      this.m_robotLines.setRobots(this.m_robots)
+      this.m_robotLines.drawLines()
     }
-    this.m_robots.push(robot)
-    this.drawRobots(true)
-    this.saveRobots()
   }
 
   // sets the robots list to a new one and saves it
   setRobots(robots: robotSkeleton[]){
     this.m_robots = robots
     this.saveRobots()
+    this.m_robotLines.setRobots(this.m_robots)
+    this.m_robotLines.drawLines()
   }
 
   // sets one robot to a new position and saves it
   setOneRobot(index: number, robot: robotSkeleton) {
     this.m_robots[index] = robot
     this.saveRobots()
+    this.m_robotLines.setRobots(this.m_robots)
+    this.m_robotLines.drawLines()
   }
 
   // saves the robots list to local storage

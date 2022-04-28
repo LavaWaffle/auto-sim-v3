@@ -13,6 +13,7 @@ export default class Robot{
   m_width: number = 48.49;
   m_height: number = 47.98;
   m_robot: Konva.Image;
+  m_robotIndex: Konva.Text;
   m_robotRotator: Konva.Transformer;
   m_x: number;
   m_y: number;
@@ -39,9 +40,23 @@ export default class Robot{
           bearing: this.m_bearing,
         }
         updatePos(index, robotSkeleton)
+        this.m_robotIndex.x(this.m_robot.x() - 7)
+        this.m_robotIndex.y(this.m_robot.y() - 10)
       })
 
       stage.m_robotImageGroup.add(this.m_robot)
+
+      this.m_robotIndex = new Konva.Text({
+        x: this.m_robot.x() + 18,
+        y: this.m_robot.y() + 10,
+        text: index.toString(),
+        fontSize: 24,
+        fontFamily: 'Calibri',
+        fill: 'white',
+        align: 'center',
+      })
+
+      stage.m_robotImageGroup.add(this.m_robotIndex)
 
       this.m_robotRotator = new Konva.Transformer({
         nodes: [this.m_robot],
