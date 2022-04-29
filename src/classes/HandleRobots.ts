@@ -3,6 +3,7 @@ import Robot from "./Robot"
 import Stage from "./Stage"
 import Storage from "./Storage"
 import RobotLines from "./RobotLines"
+import RobotUL from "./RobotUL";
 
 type robotSkeleton = {
   x: number,
@@ -14,6 +15,7 @@ export default class HandleRobots{
   m_stage: Stage;
   m_robots: robotSkeleton[] = [];
   m_robotLines: RobotLines;
+  m_robotUL: RobotUL;
   m_robotWidth: number = 48.49;
   m_robotHeight: number = 47.98;
   m_toggleRobotsInput: HTMLInputElement | null;
@@ -32,11 +34,16 @@ export default class HandleRobots{
     this.m_robots = this.getRobots()
 
     this.m_robotLines = new RobotLines(this.m_stage)
-    this.m_robotLines.setRobots(this.m_robots)
-    this.m_robotLines.drawLines()
+    
+    this.m_robotUL = new RobotUL()
+    
+    this.updateSubclasses()
+
     // needed if "this" is undefined
     this.setOneRobot = this.setOneRobot.bind(this)
     this.addRobotAtMouse = this.addRobotAtMouse.bind(this)
+    this.saveRobots = this.saveRobots.bind(this)
+    this.updateSubclasses = this.updateSubclasses.bind(this)
     stage.m_stage.on('click', this.addRobotAtMouse)
   }
   // adds a robot at the mouse position
@@ -51,8 +58,7 @@ export default class HandleRobots{
       this.m_robots.push(robot)
       this.drawRobots(true)
       this.saveRobots()
-      this.m_robotLines.setRobots(this.m_robots)
-      this.m_robotLines.drawLines()
+      this.updateSubclasses()
     }
   }
 
@@ -60,16 +66,27 @@ export default class HandleRobots{
   setRobots(robots: robotSkeleton[]){
     this.m_robots = robots
     this.saveRobots()
-    this.m_robotLines.setRobots(this.m_robots)
-    this.m_robotLines.drawLines()
+    this.updateSubclasses()
   }
 
   // sets one robot to a new position and saves it
-  setOneRobot(index: number, robot: robotSkeleton) {
+  setOneRobot = (index: number, robot: robotSkeleton, updateRobot: boolean = false) => {
     this.m_robots[index] = robot
     this.saveRobots()
+    this.updateSubclasses(!updateRobot)
+    if (updateRobot) {
+      this.drawRobots()
+    }
+  }
+
+  // update subclasses
+  updateSubclasses(UpdateRobotUL: boolean = true) {
     this.m_robotLines.setRobots(this.m_robots)
     this.m_robotLines.drawLines()
+    this.m_robotUL.setRobots(this.m_robots)
+    if (UpdateRobotUL) {
+      this.m_robotUL.drawListItems(this.setOneRobot)
+    }
   }
 
   // saves the robots list to local storage

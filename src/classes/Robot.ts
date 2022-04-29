@@ -63,6 +63,7 @@ export default class Robot{
         centeredScaling: true,
         resizeEnabled: false,
         rotateAnchorOffset: 10,
+        rotationSnaps: [0, 90, 180, 270],
         shouldOverdrawWholeArea: true
       })
 
@@ -110,7 +111,5 @@ export default class Robot{
     this.m_robot.y(y)
     this.m_robotRotator.rotation(bearing)
   }
-
-
 
 }

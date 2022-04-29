@@ -13,3 +13,22 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+.robot-list-item {
+  @apply flex items-center h-full
+}
+
+.robot-list-item p {
+  @apply bg-red-300 p-3 pr-4 w-max rounded-l-lg inline-flex items-center
+}
+.robot-list-item div {
+  @apply bg-cyan-300 h-full p-3 pl-4 rounded-r-lg flex gap-3
+}
+
+.robot-list-item span {
+  @apply flex items-center gap-1
+}
+
+.robot-list-item span input {
+  @apply bg-orange-300 w-14 rounded
+}
